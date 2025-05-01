@@ -1,0 +1,7 @@
+boto3
+google-cloud-compute
+google-cloud-monitoring
+google-auth
+azure-identity
+azure-mgmt-compute
+azure-mgmt-monitor
