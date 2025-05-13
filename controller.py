@@ -44,14 +44,12 @@ class FallbackController:
                 instance_name = instance.name
                 logger.info(f"Checking GCP instance: {instance_id} in zone: {zone}")
 
-                if has_low_usage_gcp(project_id, instance_id, zone, instance_name):
+                if has_low_usage_gcp(project_id, instance_id, zone):
                     logger.info(f"Instance {instance_id} has low usage. Attempting to remove.")
                     success, message = remove_vm(self.gcp_compute, project_id, zone, instance_name)
                     results.append((instance_id, success, message))
         logger.info("GCP candidate evaluation completed")
         return results
-
-
 
 
     def get_azure_candidates(self):
@@ -70,12 +68,12 @@ class FallbackController:
         logger.info("Executing fallback detection")
         results = {"aws": [], "gcp": [], "azure": []}
         try:
-            # results["aws"] = self.get_aws_candidates()  
+            results["aws"] = self.get_aws_candidates()  
             pass
         except Exception as e:
             logger.error(f"AWS fallback failed: {e}")
         try:
-            # results["gcp"] = self.get_gcp_candidates(project_id)
+            results["gcp"] = self.get_gcp_candidates(project_id)
             pass
         except Exception as e:
             logger.error(f"GCP fallback failed: {e}")

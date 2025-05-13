@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from utils import check_required_tags, get_aws_client
 from auth import get_aws_client
-from config import AWS_IDLE_MINUTES, AWS_CPU_THRESHOLD, NETWORK_THRESHOLD
+from config import AWS_IDLE_MINUTES, AWS_CPU_THRESHOLD
 import logging
 
 # Configure logging
@@ -37,9 +37,9 @@ def has_low_usage_aws(instance_id):
             if metric == 'CPUUtilization' and dp['Maximum'] > AWS_CPU_THRESHOLD:
                 logger.warning(f"Instance {instance_id} exceeds CPU threshold with usage: {dp['Maximum']}")
                 return False
-            elif metric in ['NetworkIn', 'NetworkOut'] and dp['Maximum'] > NETWORK_THRESHOLD:
-                logger.warning(f"Instance {instance_id} exceeds network threshold with usage: {dp['Maximum']}")
-                return False
+            # elif metric in ['NetworkIn', 'NetworkOut'] and dp['Maximum'] > NETWORK_THRESHOLD:
+            #     logger.warning(f"Instance {instance_id} exceeds network threshold with usage: {dp['Maximum']}")
+            #     return False
 
     logger.info(f"Instance {instance_id} has low usage.")
     return True

@@ -3,7 +3,7 @@ from azure.mgmt.monitor import MonitorManagementClient
 from azure.identity import ClientSecretCredential
 from auth import get_azure_client
 from utils import check_required_tags
-from config import CPU_THRESHOLD, DAYS_TO_CHECK, AZURE_CREDS_PATH, AZURE_SUBSCRIPTION_ID
+from config import AZURE_CREDS_PATH, AZURE_SUBSCRIPTION_ID
 import logging
 from azure.mgmt.compute import ComputeManagementClient
 from azure.identity import DefaultAzureCredential
