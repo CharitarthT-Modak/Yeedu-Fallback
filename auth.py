@@ -3,7 +3,7 @@ from google.oauth2 import service_account
 import boto3
 from azure.identity import ClientSecretCredential
 from azure.mgmt.compute import ComputeManagementClient
-from config import AWS_CREDS_PATH, GCP_CREDS_PATH, AZURE_CREDS_PATH, AZURE_SUBSCRIPTION_ID
+from config import AWS_CREDS_PATH, GCP_CREDS_PATH, AZURE_CREDS_PATH
 
 def load_credentials(creds_path):
     with open(creds_path, 'r') as f:
@@ -28,6 +28,8 @@ def get_azure_client():
     credential = ClientSecretCredential(
         tenant_id=creds['TENANT_ID'],
         client_id=creds['CLIENT_ID'],
-        client_secret=creds['CLIENT_SECRET']
+        client_secret=creds['CLIENT_SECRET'],
     )
-    return ComputeManagementClient(credential, AZURE_SUBSCRIPTION_ID)
+    subscription_id = creds['SUBSCRIPTION_ID']
+  # Read subscription ID from credentials
+    return ComputeManagementClient(credential, subscription_id)

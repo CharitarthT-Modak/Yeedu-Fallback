@@ -4,7 +4,7 @@ from utils import check_required_tags, remove_vm
 from aws_fallback import has_low_usage_aws
 from gcp_fallback import has_low_usage_gcp
 from azure_fallback import has_low_usage_azure
-from config import AZURE_SUBSCRIPTION_ID
+# from config import AZURE_SUBSCRIPTION_ID
 
 logger = logging.getLogger(__name__)
 
@@ -68,12 +68,12 @@ class FallbackController:
         logger.info("Executing fallback detection")
         results = {"aws": [], "gcp": [], "azure": []}
         try:
-            results["aws"] = self.get_aws_candidates()  
+            # results["aws"] = self.get_aws_candidates()  
             pass
         except Exception as e:
             logger.error(f"AWS fallback failed: {e}")
         try:
-            results["gcp"] = self.get_gcp_candidates(project_id)
+            # results["gcp"] = self.get_gcp_candidates(project_id)
             pass
         except Exception as e:
             logger.error(f"GCP fallback failed: {e}")

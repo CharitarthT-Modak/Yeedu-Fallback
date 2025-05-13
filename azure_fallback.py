@@ -3,14 +3,13 @@ from azure.mgmt.monitor import MonitorManagementClient
 from azure.identity import ClientSecretCredential
 from auth import get_azure_client
 from utils import check_required_tags
-from config import AZURE_CREDS_PATH, AZURE_SUBSCRIPTION_ID
+from config import AZURE_CREDS_PATH,AZURE_IDLE_MINUTES, AZURE_CPU_THRESHOLD
 import logging
 from azure.mgmt.compute import ComputeManagementClient
 from azure.identity import DefaultAzureCredential
-from config import AZURE_IDLE_MINUTES, AZURE_CPU_THRESHOLD
+import json
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 def has_low_usage_azure(vm_resource_id):
@@ -32,11 +31,12 @@ def has_low_usage_azure(vm_resource_id):
         creds = ClientSecretCredential(
             tenant_id=data['TENANT_ID'],
             client_id=data['CLIENT_ID'],
-            client_secret=data['CLIENT_SECRET']
+            client_secret=data['CLIENT_SECRET'],
         )
+        subscription_id = data['SUBSCRIPTION_ID'] # Read subscription ID from credentials
     logger.info("Azure credentials successfully loaded.")
 
-    monitor_client = MonitorManagementClient(creds, AZURE_SUBSCRIPTION_ID)
+    monitor_client = MonitorManagementClient(creds, subscription_id)
     logger.info("MonitorManagementClient initialized.")
 
     now = datetime.utcnow()
@@ -65,9 +65,13 @@ def has_low_usage_azure(vm_resource_id):
     return True
 
 def get_azure_clients():
+    with open(AZURE_CREDS_PATH, 'r') as f:
+        data = json.load(f)
+        subscription_id = data['SUBSCRIPTION_ID']  # Read subscription ID from credentials
+
     credential = DefaultAzureCredential()
-    compute_client = ComputeManagementClient(credential, AZURE_SUBSCRIPTION_ID)
-    monitor_client = MonitorManagementClient(credential, AZURE_SUBSCRIPTION_ID)
+    compute_client = ComputeManagementClient(credential, subscription_id)
+    monitor_client = MonitorManagementClient(credential, subscription_id)
     return compute_client, monitor_client
 
 def list_idle_vms(compute_client, monitor_client):
