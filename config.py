@@ -16,12 +16,6 @@ AWS_CREDS_PATH = os.path.join(BASE_CRED_PATH, "yeedu-aws-creds.json")
 GCP_CREDS_PATH = os.path.join(BASE_CRED_PATH, "yeedu-gcp-creds.json")
 AZURE_CREDS_PATH = os.path.join(BASE_CRED_PATH, "yeedu-azure-creds.json")
 
-# AZURE_SUBSCRIPTION_ID = "18e47609-8677-4f80-8229-6ad33923b6ec"
-
-# CPU_THRESHOLD = 5.0
-# NETWORK_THRESHOLD = 5.0
-# DAYS_TO_CHECK = 30
-
 GCP_IDLE_MINUTES = 5
 GCP_CPU_THRESHOLD = 5.0
 

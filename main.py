@@ -21,10 +21,9 @@ def get_gcp_project_id():
         creds = json.load(f)
         return creds.get("project_id")
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Run VM fallback detection across clouds")
-    # Add any required arguments here if needed in the future
-    return parser.parse_args()
+# def parse_args():
+#     parser = argparse.ArgumentParser(description="Run VM fallback detection across clouds")
+#     return parser.parse_args()
 
 def format_results(results):
     summary = {k: {"success": 0, "failed": 0, "total": 0} for k in results}
@@ -42,7 +41,7 @@ def format_results(results):
 def main():
     try:
         logger.info("Parsing arguments")
-        args = parse_args()
+        # args = parse_args()
         logger.info("Starting fallback detection")
 
         project_id = get_gcp_project_id()

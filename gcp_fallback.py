@@ -71,16 +71,16 @@ def has_low_usage_gcp(project_id, instance_id, zone):
     return False
 
 
-def delete_vm(compute, project_id, zone, instance_name):
-    try:
-        logger.info(f"Attempting to delete VM: {instance_name} in zone: {zone}, project: {project_id}")
-        operation = compute.instances().delete(
-            project=project_id,
-            zone=zone,
-            instance=instance_name
-        ).execute()
-        logger.info(f"Delete operation for VM {instance_name} started: {operation}")
-        return True
-    except Exception as e:
-        logger.error(f"Failed to delete VM {instance_name}: {e}")
-        return False
+# def delete_vm(compute, project_id, zone, instance_name):
+#     try:
+#         logger.info(f"Attempting to delete VM: {instance_name} in zone: {zone}, project: {project_id}")
+#         operation = compute.instances().delete(
+#             project=project_id,
+#             zone=zone,
+#             instance=instance_name
+#         ).execute()
+#         logger.info(f"Delete operation for VM {instance_name} started: {operation}")
+#         return True
+#     except Exception as e:
+#         logger.error(f"Failed to delete VM {instance_name}: {e}")
+#         return False

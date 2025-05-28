@@ -44,36 +44,36 @@ def has_low_usage_aws(instance_id):
     logger.info(f"Instance {instance_id} has low usage.")
     return True
 
-def list_zombie_vms(aws_client, region):
-    try:
-        logger.info(f"Fetching instances in region: {region}")
-        instances = aws_client.describe_instances(Filters=[{"Name": "instance-state-name", "Values": ["running"]}])
-        zombie_vms = []
+# def list_zombie_vms(aws_client, region):
+#     try:
+#         logger.info(f"Fetching instances in region: {region}")
+#         instances = aws_client.describe_instances(Filters=[{"Name": "instance-state-name", "Values": ["running"]}])
+#         zombie_vms = []
 
-        for reservation in instances.get("Reservations", []):
-# Path to the GCP credentials file used for authentication
-            for instance in reservation.get("Instances", []):
-                instance_id = instance["InstanceId"]
-                instance_name = next(
-                    (tag["Value"] for tag in instance.get("Tags", []) if tag["Key"] == "Name"), "Unnamed"
-                )
-                logger.info(f"Checking instance: {instance_name} (ID: {instance_id})")
+#         for reservation in instances.get("Reservations", []):
+# # Path to the GCP credentials file used for authentication
+#             for instance in reservation.get("Instances", []):
+#                 instance_id = instance["InstanceId"]
+#                 instance_name = next(
+#                     (tag["Value"] for tag in instance.get("Tags", []) if tag["Key"] == "Name"), "Unnamed"
+#                 )
+#                 logger.info(f"Checking instance: {instance_name} (ID: {instance_id})")
 
-                if not check_required_tags(instance):
-                    logger.info(f"Instance {instance_name} (ID: {instance_id}) does not have required tags.")
-                    continue
+#                 if not check_required_tags(instance):
+#                     logger.info(f"Instance {instance_name} (ID: {instance_id}) does not have required tags.")
+#                     continue
 
-                # Simulate low usage check (replace with actual logic)
-                if is_low_usage(instance):
-                    logger.info(f"Instance {instance_name} (ID: {instance_id}) is a zombie VM.")
-                    zombie_vms.append(instance_name)
+#                 # Simulate low usage check (replace with actual logic)
+#                 if is_low_usage(instance):
+#                     logger.info(f"Instance {instance_name} (ID: {instance_id}) is a zombie VM.")
+#                     zombie_vms.append(instance_name)
 
-        logger.info(f"Zombie VMs in region {region}: {zombie_vms}")
-        return zombie_vms
-    except Exception as e:
-        logger.error(f"Error listing zombie VMs: {e}")
-        raise
+#         logger.info(f"Zombie VMs in region {region}: {zombie_vms}")
+#         return zombie_vms
+#     except Exception as e:
+#         logger.error(f"Error listing zombie VMs: {e}")
+#         raise
 
-def is_low_usage(instance):
-    # Placeholder for actual low usage logic
-    return True  # Simulate all instances as low usage for now
+# def is_low_usage(instance):
+#     # Placeholder for actual low usage logic
+#     return True  # Simulate all instances as low usage for now

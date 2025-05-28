@@ -33,22 +33,22 @@ def has_low_usage_azure(vm_resource_id):
             client_id=data['CLIENT_ID'],
             client_secret=data['CLIENT_SECRET'],
         )
-        subscription_id = data['SUBSCRIPTION_ID'] # Read subscription ID from credentials
+        subscription_id = data['SUBSCRIPTION_ID'] 
     logger.info("Azure credentials successfully loaded.")
 
     monitor_client = MonitorManagementClient(creds, subscription_id)
     logger.info("MonitorManagementClient initialized.")
 
     now = datetime.utcnow()
-    start = now - timedelta(minutes=AZURE_IDLE_MINUTES)  # Use time-based check
+    start = now - timedelta(minutes=AZURE_IDLE_MINUTES)  
     logger.info(f"Fetching metrics from {start} to {now} for VM: {vm_resource_id}")
 
     metrics_data = monitor_client.metrics.list(
         resource_uri=vm_resource_id,
         timespan=f"{start}/{now}",
-        interval='PT1M',  # 1-minute granularity
+        interval='PT1M', 
         metricnames='Percentage CPU',
-        aggregation='Maximum'  # Check maximum utilization
+        aggregation='Maximum' 
     )
     logger.info("Metrics data retrieved successfully.")
 
@@ -73,38 +73,3 @@ def get_azure_clients():
     compute_client = ComputeManagementClient(credential, subscription_id)
     monitor_client = MonitorManagementClient(credential, subscription_id)
     return compute_client, monitor_client
-
-def list_idle_vms(compute_client, monitor_client):
-    try:
-        logger.info("Fetching Azure VMs...")
-        idle_vms = []
-        for vm in compute_client.virtual_machines.list_all():
-            vm_name = vm.name
-            resource_group = vm.id.split("/")[4]
-            logger.info(f"Checking VM: {vm_name} in resource group: {resource_group}")
-
-            # Fetch CPU utilization metrics
-            end_time = datetime.utcnow()
-            start_time = end_time - timedelta(minutes=AZURE_IDLE_MINUTES)
-            metrics_data = monitor_client.metrics.list(
-                resource_uri=vm.id,
-                timespan=f"{start_time}/{end_time}",
-                interval="PT1M",
-                metricnames="Percentage CPU",
-                aggregation="Average"
-            )
-
-            # Check if CPU usage is below the threshold
-            for metric in metrics_data.value:
-                for timeseries in metric.timeseries:
-                    for data in timeseries.data:
-                        if data.average is not None and data.average < AZURE_CPU_THRESHOLD:
-                            logger.info(f"VM {vm_name} is idle with CPU usage: {data.average}%")
-                            idle_vms.append(vm_name)
-                            break
-
-        logger.info(f"Idle VMs: {idle_vms}")
-        return idle_vms
-    except Exception as e:
-        logger.error(f"Error listing idle VMs: {e}")
-        raise

@@ -15,7 +15,7 @@ class FallbackController:
         self.gcp_compute = get_gcp_client()
         self.azure_compute = get_azure_client()
 
-    def get_aws_candidates(self):
+    def get_aws_machines(self):
         logger.info("Fetching AWS candidates for fallback")
         results = []
         instances = self.ec2.describe_instances()
@@ -30,7 +30,7 @@ class FallbackController:
         logger.info("AWS candidate evaluation completed")
         return results
 
-    def get_gcp_candidates(self, project_id):
+    def get_gcp_machines(self, project_id):
         logger.info("Fetching GCP candidates for fallback")
         results = []
         request = {"project": project_id}
@@ -52,7 +52,7 @@ class FallbackController:
         return results
 
 
-    def get_azure_candidates(self):
+    def get_azure_machines(self):
         logger.info("Fetching Azure candidates for fallback")
         results = []
         for vm in self.azure_compute.virtual_machines.list_all():
@@ -68,17 +68,17 @@ class FallbackController:
         logger.info("Executing fallback detection")
         results = {"aws": [], "gcp": [], "azure": []}
         try:
-            # results["aws"] = self.get_aws_candidates()  
+            results["aws"] = self.get_aws_machines()  
             pass
         except Exception as e:
             logger.error(f"AWS fallback failed: {e}")
         try:
-            # results["gcp"] = self.get_gcp_candidates(project_id)
+            results["gcp"] = self.get_gcp_machines(project_id)
             pass
         except Exception as e:
             logger.error(f"GCP fallback failed: {e}")
         try:
-            results["azure"] = self.get_azure_candidates()  
+            results["azure"] = self.get_azure_machines()  
             pass
         except Exception as e:
             logger.error(f"Azure fallback failed: {e}")

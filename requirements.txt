@@ -1,7 +1,7 @@
-boto3
-google-cloud-compute
-google-cloud-monitoring
-google-auth
-azure-identity
-azure-mgmt-compute
-azure-mgmt-monitor
+boto3=1.36.7
+google-cloud-compute=1.30.0
+google-cloud-monitoring=2.27.1
+google-auth=2.38.0
+azure-identity=1.19.0
+azure-mgmt-compute=33.1.0
+azure-mgmt-monitor=6.0.2
