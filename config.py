@@ -16,11 +16,15 @@ AWS_CREDS_PATH = os.path.join(BASE_CRED_PATH, "yeedu-aws-creds.json")
 GCP_CREDS_PATH = os.path.join(BASE_CRED_PATH, "yeedu-gcp-creds.json")
 AZURE_CREDS_PATH = os.path.join(BASE_CRED_PATH, "yeedu-azure-creds.json")
 
-GCP_IDLE_MINUTES = 5
+# GCP_IDLE_MINUTES = 5
 GCP_CPU_THRESHOLD = 5.0
 
-AWS_IDLE_MINUTES = 5
+# AWS_IDLE_MINUTES = 5
 AWS_CPU_THRESHOLD = 5.0
 
-AZURE_IDLE_MINUTES = 5
+# AZURE_IDLE_MINUTES = 5
 AZURE_CPU_THRESHOLD = 5.0
+
+# VM Age and CPU Check Configuration
+VM_AGE_DAYS = 30
+CPU_CHECK_DAYS = 2
